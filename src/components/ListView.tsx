@@ -38,24 +38,22 @@ const ListView: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = pokemon;
+    let filtered = [...pokemon];
 
-    // Apply search filter
     if (searchQuery.trim()) {
       filtered = pokemon.filter(p => 
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
-    // Apply sorting
     filtered.sort((a, b) => {
       let aValue: string | number;
       let bValue: string | number;
 
       switch (sortBy) {
         case 'name':
-          aValue = a.name;
-          bValue = b.name;
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
           break;
         case 'id':
           aValue = a.id;
@@ -139,6 +137,10 @@ const ListView: React.FC = () => {
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
+          
+          <div className="sort-indicator">
+            {sortOrder === 'asc' ? '↑' : '↓'} Sort by {sortBy}
+          </div>
         </div>
       </div>
 
@@ -176,6 +178,13 @@ const ListView: React.FC = () => {
           <p>No Pokemon found matching "{searchQuery}"</p>
         </div>
       )}
+
+      <div className="debug-info">
+        <p>Showing {filteredPokemon.length} Pokemon | Sort: {sortBy} ({sortOrder})</p>
+        {filteredPokemon.length > 0 && (
+          <p>First 3: {filteredPokemon.slice(0, 3).map(p => `${p.name} (${sortBy === 'name' ? p.name : sortBy === 'id' ? p.id : sortBy === 'height' ? p.height : p.weight})`).join(', ')}</p>
+        )}
+      </div>
     </div>
   );
 };
