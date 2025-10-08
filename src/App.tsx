@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import ListView from './components/ListView';
+import GalleryView from './components/GalleryView';
+import DetailView from './components/DetailView';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router basename="/mp2">
+      <div className="App">
+        <nav className="navbar">
+          <div className="nav-container">
+            <Link to="/" className="nav-title">
+              🎮 Pokemon Explorer
+            </Link>
+            <div className="nav-links">
+              <Link to="/" className="nav-link">List View</Link>
+              <Link to="/gallery" className="nav-link">Gallery View</Link>
+            </div>
+          </div>
+        </nav>
+        
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<ListView />} />
+            <Route path="/gallery" element={<GalleryView />} />
+            <Route path="/pokemon/:id" element={<DetailView />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 
